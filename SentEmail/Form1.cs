@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SentEmail
@@ -16,43 +18,84 @@ namespace SentEmail
 		public Form1()
 		{
 			InitializeComponent();
+			Control.CheckForIllegalCrossThreadCalls = false;
 		}
 		ExchangeService service = new ExchangeService();
-		
-		String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$ ";
-		
+
+		//String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$";
+		String EmailRegex = @"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?";
 		private void bt_send_Click(object sender, EventArgs e)
 		{
+			//await SendEmail();
+			var thread = new Thread(SendEmail);
+			thread.Start();
+		}
+
+		private void SendEmail()
+		{
 			var tos = tb_to.Text.Split(';');
-			var ccs = tb_to.Text.Split(';');
-			var bccs = tb_to.Text.Split(';');
-
-			if (tb_to.Text != String.Empty && !Regex.IsMatch(tb_to.Text, EmailRegex))
+			var ccs = tb_cc.Text.Split(';');
+			var bccs = tb_bcc.Text.Split(';');
+			tos.ToList().ForEach(to =>
 			{
-				MessageBox.Show(string.Format(
-					"{0} has wrong email address format.",tb_to.Text));
-			}
-			if (tb_to.Text != String.Empty && !Regex.IsMatch(tb_cc.Text, EmailRegex))
+				if (to != string.Empty && !Regex.IsMatch(to, EmailRegex))
+				{
+					MessageBox.Show(string.Format(
+					"{0} has wrong email address format.", to));
+				}
+			});
+
+			ccs.ToList().ForEach(cc =>
 			{
-				MessageBox.Show(string.Format(
-					"{0} has wrong email address format.", tb_cc.Text));
-			}
-			if (tb_to.Text != String.Empty && !Regex.IsMatch(tb_bcc.Text, EmailRegex))
+				if (cc != string.Empty && !Regex.IsMatch(cc, EmailRegex))
+				{
+					MessageBox.Show(string.Format(
+					"{0} has wrong email address format.", cc));
+				}
+			});
+
+			bccs.ToList().ForEach(bcc =>
 			{
-				MessageBox.Show(string.Format(
-					"{0} has wrong email address format.", tb_bcc.Text));
+				if (bcc != string.Empty && !Regex.IsMatch(bcc, EmailRegex))
+				{
+					MessageBox.Show(string.Format(
+					"{0} has wrong email address format.", bcc));
+				}
+			});
+
+
+			
+			
+			var random = new Random();
+			var loopTime = int.Parse(tb_loopTimes.Text);
+			progressBar1.Maximum = loopTime;
+			for (int i = 0; i < loopTime; i++)
+			{
+				EmailMessage message = new EmailMessage(service);
+
+
+				if (tos[0] != string.Empty) message.ToRecipients.AddRange(tos);
+				if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
+				if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
+				message.Subject = tb_subject.Text + i.ToString("00000");
+
+				message.Body = tb_body.Text + i.ToString("00000");
+				//message.Attachments.AddFileAttachment("");
+				var randomNum = random.Next(1, 100);
+				if (randomNum < float.Parse(tb_attachmentRate.Text) * 100 &&
+					tb_attachments.Tag != null)
+				{
+					message.Attachments.Clear();
+					foreach (var fileNmae in (string[])tb_attachments.Tag)
+					{
+						message.Attachments.AddFileAttachment(fileNmae);
+					}
+				}
+				
+				message.Send();
+				progressBar1.Value = i + 1;
+				//Thread.Sleep(TimeSpan.FromSeconds(5));
 			}
-
-
-			EmailMessage message = new EmailMessage(service);
-			message.Subject = "Interesting";
-
-			message.Body = "The proposition has been considered.";
-
-			message.ToRecipients.Add("SharedMailHead@ucazhuhai.onmicrosoft.com");
-			message.ToRecipients.Add("SharedMailHead2@ucazhuhai.onmicrosoft.com");
-			message.ToRecipients.Add("SharedMailHead3@ucazhuhai.onmicrosoft.com");
-			message.Send();
 		}
 
 		private void bt_connect_Click(object sender, EventArgs e)
@@ -74,9 +117,41 @@ namespace SentEmail
 			// Use Autodiscover to set the URL endpoint.
 			//service.Credentials = new WebCredentials("user1", "password", "contoso");
 			//service.AutodiscoverUrl("will.fang@ucazhuhai.onmicrosoft.com");
-			service.Url = new Uri("");
+			service.Url = new Uri(tb_url.Text);
 
 			//service.begin
+		}
+
+		private void tb_loopTimes_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			//阻止从键盘输入键
+			e.Handled = true;
+			if ((e.KeyChar >= '0' && e.KeyChar <= '9') || e.KeyChar == '\b')
+			{
+				e.Handled = false;
+			}
+		}
+
+		private void tb_attachmentRate_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			e.Handled = true;
+			if ((e.KeyChar >= '0' && e.KeyChar <= '9') || 
+				(e.KeyChar == '.' && !tb_attachmentRate.Text.Contains('.')) ||
+				e.KeyChar == '\b')
+			{
+				e.Handled = false;
+			}
+		}
+
+		private void BtSelect_Click(object sender, EventArgs e)
+		{
+			if( openFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				tb_attachments.Text = string.Join("\r\n", openFileDialog1.FileNames);
+				tb_attachments.Tag = openFileDialog1.FileNames;
+			}
+
+			
 		}
 	}
 }

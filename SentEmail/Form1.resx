@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="tb_to.Text" xml:space="preserve">
+    <value>Shared00000-00999@ucazhuhai.onmicrosoft.com;Shared01000-01999@ucazhuhai.onmicrosoft.com;Shared02000-02999@ucazhuhai.onmicrosoft.com;Shared03000-03999@ucazhuhai.onmicrosoft.com;Shared04000-04999@ucazhuhai.onmicrosoft.com;Shared05000-05999@ucazhuhai.onmicrosoft.com;Shared06000-06999@ucazhuhai.onmicrosoft.com;Shared07000-07999@ucazhuhai.onmicrosoft.com;Shared08000-08999@ucazhuhai.onmicrosoft.com;Shared09000-09999@ucazhuhai.onmicrosoft.com</value>
+  </data>
+  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
