@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="tb_to.Text" xml:space="preserve">
-    <value>Shared00000-00999@ucazhuhai.onmicrosoft.com;Shared01000-01999@ucazhuhai.onmicrosoft.com;Shared02000-02999@ucazhuhai.onmicrosoft.com;Shared03000-03999@ucazhuhai.onmicrosoft.com;Shared04000-04999@ucazhuhai.onmicrosoft.com;Shared05000-05999@ucazhuhai.onmicrosoft.com;Shared06000-06999@ucazhuhai.onmicrosoft.com;Shared07000-07999@ucazhuhai.onmicrosoft.com;Shared08000-08999@ucazhuhai.onmicrosoft.com;Shared09000-09999@ucazhuhai.onmicrosoft.com</value>
+    <value>DistributionG00000_User00000-00999@wm-e2013.wm.zhu.cn.qsft;DistributionG00001_User01000-01999@wm-e2013.wm.zhu.cn.qsft;DistributionG00002_User02000-02999@wm-e2013.wm.zhu.cn.qsft;DistributionG00003_User03000-03999@wm-e2013.wm.zhu.cn.qsft;DistributionG00004_User04000-04999@wm-e2013.wm.zhu.cn.qsft;DistributionG00005_User05000-05999@wm-e2013.wm.zhu.cn.qsft;DistributionG00006_User06000-06999@wm-e2013.wm.zhu.cn.qsft;DistributionG00007_User07000-07999@wm-e2013.wm.zhu.cn.qsft;DistributionG00008_User08000-08999@wm-e2013.wm.zhu.cn.qsft;DistributionG00009_User09000-09999@wm-e2013.wm.zhu.cn.qsft</value>
   </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

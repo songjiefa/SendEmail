@@ -60,22 +60,20 @@
 			// 
 			// tb_to
 			// 
-			this.tb_to.ImeMode = System.Windows.Forms.ImeMode.On;
-			this.tb_to.Location = new System.Drawing.Point(207, 166);
-			this.tb_to.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_to.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.tb_to.Location = new System.Drawing.Point(138, 120);
 			this.tb_to.Multiline = true;
 			this.tb_to.Name = "tb_to";
 			this.tb_to.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.tb_to.Size = new System.Drawing.Size(523, 34);
+			this.tb_to.Size = new System.Drawing.Size(363, 43);
 			this.tb_to.TabIndex = 0;
 			this.tb_to.Text = resources.GetString("tb_to.Text");
 			// 
 			// bt_send
 			// 
-			this.bt_send.Location = new System.Drawing.Point(620, 738);
-			this.bt_send.Margin = new System.Windows.Forms.Padding(4);
+			this.bt_send.Location = new System.Drawing.Point(413, 533);
 			this.bt_send.Name = "bt_send";
-			this.bt_send.Size = new System.Drawing.Size(112, 32);
+			this.bt_send.Size = new System.Drawing.Size(75, 23);
 			this.bt_send.TabIndex = 1;
 			this.bt_send.Text = "Send";
 			this.bt_send.UseVisualStyleBackColor = true;
@@ -83,10 +81,9 @@
 			// 
 			// bt_connect
 			// 
-			this.bt_connect.Location = new System.Drawing.Point(620, 90);
-			this.bt_connect.Margin = new System.Windows.Forms.Padding(4);
+			this.bt_connect.Location = new System.Drawing.Point(413, 65);
 			this.bt_connect.Name = "bt_connect";
-			this.bt_connect.Size = new System.Drawing.Size(112, 32);
+			this.bt_connect.Size = new System.Drawing.Size(75, 23);
 			this.bt_connect.TabIndex = 2;
 			this.bt_connect.Text = "Connect";
 			this.bt_connect.UseVisualStyleBackColor = true;
@@ -94,158 +91,142 @@
 			// 
 			// tb_emailAddress
 			// 
-			this.tb_emailAddress.Location = new System.Drawing.Point(207, 55);
-			this.tb_emailAddress.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_emailAddress.Location = new System.Drawing.Point(138, 40);
 			this.tb_emailAddress.Name = "tb_emailAddress";
-			this.tb_emailAddress.Size = new System.Drawing.Size(319, 28);
+			this.tb_emailAddress.Size = new System.Drawing.Size(214, 20);
 			this.tb_emailAddress.TabIndex = 3;
-			this.tb_emailAddress.Text = "will.fang@ucazhuhai.onmicrosoft.com";
+			this.tb_emailAddress.Text = "administrator@wm-e2013.wm.zhu.cn.qsft";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(84, 64);
-			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label1.Location = new System.Drawing.Point(56, 46);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(62, 18);
+			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Email:";
 			// 
 			// tb_password
 			// 
-			this.tb_password.Location = new System.Drawing.Point(207, 90);
-			this.tb_password.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_password.Location = new System.Drawing.Point(138, 65);
 			this.tb_password.Name = "tb_password";
 			this.tb_password.PasswordChar = '*';
-			this.tb_password.Size = new System.Drawing.Size(319, 28);
+			this.tb_password.Size = new System.Drawing.Size(214, 20);
 			this.tb_password.TabIndex = 5;
-			this.tb_password.Text = "I@mrootPWD";
+			this.tb_password.Text = "I@mroot";
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(88, 90);
-			this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label2.Location = new System.Drawing.Point(59, 65);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(89, 18);
+			this.label2.Size = new System.Drawing.Size(56, 13);
 			this.label2.TabIndex = 6;
 			this.label2.Text = "Password:";
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(102, 170);
-			this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label3.Location = new System.Drawing.Point(74, 123);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(35, 18);
+			this.label3.Size = new System.Drawing.Size(23, 13);
 			this.label3.TabIndex = 7;
 			this.label3.Text = "To:";
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(88, 18);
-			this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label4.Location = new System.Drawing.Point(59, 13);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(44, 18);
+			this.label4.Size = new System.Drawing.Size(32, 13);
 			this.label4.TabIndex = 8;
 			this.label4.Text = "URL:";
 			// 
 			// tb_url
 			// 
-			this.tb_url.Location = new System.Drawing.Point(207, 8);
-			this.tb_url.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_url.Location = new System.Drawing.Point(138, 6);
 			this.tb_url.Name = "tb_url";
-			this.tb_url.Size = new System.Drawing.Size(508, 28);
+			this.tb_url.Size = new System.Drawing.Size(340, 20);
 			this.tb_url.TabIndex = 9;
-			this.tb_url.Text = "https://outlook.office365.com/EWS/Exchange.asmx";
+			this.tb_url.Text = "https://wm-e2013-mc.wm-e2013.wm.zhu.cn.qsft/EWS/Exchange.asmx";
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(102, 208);
-			this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label5.Location = new System.Drawing.Point(68, 198);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(35, 18);
+			this.label5.Size = new System.Drawing.Size(23, 13);
 			this.label5.TabIndex = 10;
 			this.label5.Text = "Cc:";
 			// 
 			// tb_cc
 			// 
-			this.tb_cc.Location = new System.Drawing.Point(207, 208);
-			this.tb_cc.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_cc.Location = new System.Drawing.Point(138, 198);
 			this.tb_cc.Multiline = true;
 			this.tb_cc.Name = "tb_cc";
 			this.tb_cc.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.tb_cc.Size = new System.Drawing.Size(523, 32);
+			this.tb_cc.Size = new System.Drawing.Size(350, 24);
 			this.tb_cc.TabIndex = 11;
 			// 
 			// lb_bcc
 			// 
 			this.lb_bcc.AutoSize = true;
-			this.lb_bcc.Location = new System.Drawing.Point(102, 244);
-			this.lb_bcc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.lb_bcc.Location = new System.Drawing.Point(68, 231);
 			this.lb_bcc.Name = "lb_bcc";
-			this.lb_bcc.Size = new System.Drawing.Size(44, 18);
+			this.lb_bcc.Size = new System.Drawing.Size(29, 13);
 			this.lb_bcc.TabIndex = 12;
 			this.lb_bcc.Text = "Bcc:";
 			// 
 			// tb_bcc
 			// 
-			this.tb_bcc.Location = new System.Drawing.Point(207, 244);
-			this.tb_bcc.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_bcc.Location = new System.Drawing.Point(137, 228);
 			this.tb_bcc.Multiline = true;
 			this.tb_bcc.Name = "tb_bcc";
 			this.tb_bcc.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.tb_bcc.Size = new System.Drawing.Size(523, 36);
+			this.tb_bcc.Size = new System.Drawing.Size(350, 27);
 			this.tb_bcc.TabIndex = 13;
 			// 
 			// tb_subject
 			// 
-			this.tb_subject.Location = new System.Drawing.Point(207, 307);
-			this.tb_subject.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_subject.Location = new System.Drawing.Point(138, 272);
 			this.tb_subject.Name = "tb_subject";
-			this.tb_subject.Size = new System.Drawing.Size(523, 28);
+			this.tb_subject.Size = new System.Drawing.Size(350, 20);
 			this.tb_subject.TabIndex = 14;
 			this.tb_subject.Text = "Subject";
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(102, 317);
-			this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label6.Location = new System.Drawing.Point(68, 272);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(80, 18);
+			this.label6.Size = new System.Drawing.Size(46, 13);
 			this.label6.TabIndex = 15;
 			this.label6.Text = "Subject:";
 			// 
 			// tb_body
 			// 
-			this.tb_body.Location = new System.Drawing.Point(207, 360);
-			this.tb_body.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_body.Location = new System.Drawing.Point(137, 298);
 			this.tb_body.Multiline = true;
 			this.tb_body.Name = "tb_body";
 			this.tb_body.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tb_body.Size = new System.Drawing.Size(523, 167);
+			this.tb_body.Size = new System.Drawing.Size(350, 122);
 			this.tb_body.TabIndex = 16;
 			this.tb_body.Text = "Body";
 			// 
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(102, 364);
-			this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label7.Location = new System.Drawing.Point(68, 298);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(53, 18);
+			this.label7.Size = new System.Drawing.Size(34, 13);
 			this.label7.TabIndex = 17;
 			this.label7.Text = "Body:";
 			// 
 			// tb_loopTimes
 			// 
-			this.tb_loopTimes.Location = new System.Drawing.Point(205, 707);
-			this.tb_loopTimes.Margin = new System.Windows.Forms.Padding(4);
+			this.tb_loopTimes.Location = new System.Drawing.Point(137, 511);
 			this.tb_loopTimes.Name = "tb_loopTimes";
-			this.tb_loopTimes.Size = new System.Drawing.Size(90, 28);
+			this.tb_loopTimes.Size = new System.Drawing.Size(61, 20);
 			this.tb_loopTimes.TabIndex = 18;
 			this.tb_loopTimes.Text = "1";
 			this.tb_loopTimes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_loopTimes_KeyPress);
@@ -253,10 +234,9 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(75, 711);
-			this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label8.Location = new System.Drawing.Point(50, 513);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(98, 18);
+			this.label8.Size = new System.Drawing.Size(62, 13);
 			this.label8.TabIndex = 19;
 			this.label8.Text = "LoopTimes:";
 			// 
@@ -266,28 +246,31 @@
 			// 
 			// tb_attachments
 			// 
-			this.tb_attachments.Location = new System.Drawing.Point(207, 588);
+			this.tb_attachments.Location = new System.Drawing.Point(138, 425);
+			this.tb_attachments.Margin = new System.Windows.Forms.Padding(2);
 			this.tb_attachments.Multiline = true;
 			this.tb_attachments.Name = "tb_attachments";
 			this.tb_attachments.ReadOnly = true;
 			this.tb_attachments.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tb_attachments.Size = new System.Drawing.Size(523, 98);
+			this.tb_attachments.Size = new System.Drawing.Size(350, 72);
 			this.tb_attachments.TabIndex = 20;
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(61, 630);
+			this.label9.Location = new System.Drawing.Point(41, 455);
+			this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(116, 18);
+			this.label9.Size = new System.Drawing.Size(69, 13);
 			this.label9.TabIndex = 21;
 			this.label9.Text = "Attachments:";
 			// 
 			// tb_attachmentRate
 			// 
-			this.tb_attachmentRate.Location = new System.Drawing.Point(205, 749);
+			this.tb_attachmentRate.Location = new System.Drawing.Point(137, 541);
+			this.tb_attachmentRate.Margin = new System.Windows.Forms.Padding(2);
 			this.tb_attachmentRate.Name = "tb_attachmentRate";
-			this.tb_attachmentRate.Size = new System.Drawing.Size(90, 28);
+			this.tb_attachmentRate.Size = new System.Drawing.Size(61, 20);
 			this.tb_attachmentRate.TabIndex = 22;
 			this.tb_attachmentRate.Text = "0.3";
 			this.tb_attachmentRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_attachmentRate_KeyPress);
@@ -295,17 +278,19 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(16, 752);
+			this.label10.Location = new System.Drawing.Point(11, 543);
+			this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(152, 18);
+			this.label10.Size = new System.Drawing.Size(84, 13);
 			this.label10.TabIndex = 23;
 			this.label10.Text = "attachment rate:";
 			// 
 			// BtSelect
 			// 
-			this.BtSelect.Location = new System.Drawing.Point(749, 630);
+			this.BtSelect.Location = new System.Drawing.Point(499, 455);
+			this.BtSelect.Margin = new System.Windows.Forms.Padding(2);
 			this.BtSelect.Name = "BtSelect";
-			this.BtSelect.Size = new System.Drawing.Size(89, 56);
+			this.BtSelect.Size = new System.Drawing.Size(59, 40);
 			this.BtSelect.TabIndex = 24;
 			this.BtSelect.Text = "...";
 			this.BtSelect.UseVisualStyleBackColor = true;
@@ -313,16 +298,17 @@
 			// 
 			// progressBar1
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(749, 749);
+			this.progressBar1.Location = new System.Drawing.Point(499, 541);
+			this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
 			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(100, 23);
+			this.progressBar1.Size = new System.Drawing.Size(67, 17);
 			this.progressBar1.TabIndex = 25;
 			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1058, 817);
+			this.ClientSize = new System.Drawing.Size(705, 590);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.BtSelect);
 			this.Controls.Add(this.label10);
@@ -349,7 +335,6 @@
 			this.Controls.Add(this.bt_connect);
 			this.Controls.Add(this.bt_send);
 			this.Controls.Add(this.tb_to);
-			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);

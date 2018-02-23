@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -20,7 +23,7 @@ namespace SentEmail
 			InitializeComponent();
 			Control.CheckForIllegalCrossThreadCalls = false;
 		}
-		ExchangeService service = new ExchangeService();
+		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
 
 		//String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$";
 		String EmailRegex = @"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?";
@@ -100,6 +103,17 @@ namespace SentEmail
 
 		private void bt_connect_Click(object sender, EventArgs e)
 		{
+			//Trust all certificates
+			System.Net.ServicePointManager.ServerCertificateValidationCallback =
+		((sender1, certificate, chain, sslPolicyErrors) => true);
+
+			// trust sender
+			System.Net.ServicePointManager.ServerCertificateValidationCallback
+							= ((sender1, cert, chain, errors) =>
+							cert.Subject.Contains("CN"));
+
+			// validate cert by calling a function
+			ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
 			if (!Regex.IsMatch(tb_emailAddress.Text, EmailRegex))
 			{
 				MessageBox.Show(string.Format(
@@ -109,7 +123,16 @@ namespace SentEmail
 			service.UseDefaultCredentials = true;
 
 			// Connect by using the credentials of user1 at contoso.com.
-			service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
+			if (tb_url.Text.Contains("office365.com"))
+			{
+				service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
+			}
+			else
+			{
+				service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
+				//service.Credentials = new NetworkCredential(tb_emailAddress.Text, tb_password.Text);
+				//service.Credentials = DefaultCredential
+			}
 
 			// Connect by using the credentials of contoso/user1.
 			//service.Credentials = new WebCredentials("user1", "password", "contoso");
@@ -120,6 +143,20 @@ namespace SentEmail
 			service.Url = new Uri(tb_url.Text);
 
 			//service.begin
+		}
+
+
+
+		// callback used to validate the certificate in an SSL conversation
+		private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors policyErrors)
+		{
+			bool result = false;
+			if (cert.Subject.ToUpper().Contains("CN"))
+			{
+				result = true;
+			}
+
+			return result;
 		}
 
 		private void tb_loopTimes_KeyPress(object sender, KeyPressEventArgs e)
