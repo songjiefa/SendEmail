@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="tb_to.Text" xml:space="preserve">
-    <value>DistributionG00000-00999@uca-e2010.wm.zhu.cn.qsft;DistributionG01000-01999@uca-e2010.wm.zhu.cn.qsft;DistributionG02000-02999@uca-e2010.wm.zhu.cn.qsft;DistributionG03000-03999@uca-e2010.wm.zhu.cn.qsft;DistributionG04000-04999@uca-e2010.wm.zhu.cn.qsft;DistributionG05000-05999@uca-e2010.wm.zhu.cn.qsft;DistributionG06000-06999@uca-e2010.wm.zhu.cn.qsft;DistributionG07000-07999@uca-e2010.wm.zhu.cn.qsft;DistributionG08000-08999@uca-e2010.wm.zhu.cn.qsft;DistributionG09000-09999@uca-e2010.wm.zhu.cn.qsft</value>
+    <value>DistributionG00000_User00000-00999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00001_User01000-01999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00002_User02000-02999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00003_User03000-03999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00004_User04000-04999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00005_User05000-05999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00006_User06000-06999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00007_User07000-07999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00008_User08000-08999@nauca-e2010.nauca.packettrap.sfo.us.qsft;DistributionG00009_User09000-09999@nauca-e2010.nauca.packettrap.sfo.us.qsft</value>
   </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

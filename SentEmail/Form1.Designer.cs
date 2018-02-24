@@ -56,6 +56,11 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.BtSelect = new System.Windows.Forms.Button();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.lBSettings = new System.Windows.Forms.ListBox();
+			this.btSave = new System.Windows.Forms.Button();
+			this.btLoad = new System.Windows.Forms.Button();
+			this.tbSettingName = new System.Windows.Forms.TextBox();
+			this.btDelete = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// tb_to
@@ -95,7 +100,7 @@
 			this.tb_emailAddress.Name = "tb_emailAddress";
 			this.tb_emailAddress.Size = new System.Drawing.Size(214, 20);
 			this.tb_emailAddress.TabIndex = 3;
-			this.tb_emailAddress.Text = "administrator@uca-e2010.wm.zhu.cn.qsft";
+			this.tb_emailAddress.Text = "administrator@NAUCA-E2010.NAUCA.PACKETTRAP.SFO.US.QSFT";
 			// 
 			// label1
 			// 
@@ -148,7 +153,7 @@
 			this.tb_url.Name = "tb_url";
 			this.tb_url.Size = new System.Drawing.Size(340, 20);
 			this.tb_url.TabIndex = 9;
-			this.tb_url.Text = "https://uca-e2010-cas.uca-e2010.wm.zhu.cn.qsft/EWS/Exchange.asmx";
+			this.tb_url.Text = "https://NAUCA-E2010-MHC.NAUCA-E2010-MHC/EWS/Exchange.asmx";
 			// 
 			// label5
 			// 
@@ -304,11 +309,61 @@
 			this.progressBar1.Size = new System.Drawing.Size(67, 17);
 			this.progressBar1.TabIndex = 25;
 			// 
+			// lBSettings
+			// 
+			this.lBSettings.FormattingEnabled = true;
+			this.lBSettings.Location = new System.Drawing.Point(524, 190);
+			this.lBSettings.Name = "lBSettings";
+			this.lBSettings.Size = new System.Drawing.Size(156, 121);
+			this.lBSettings.TabIndex = 26;
+			// 
+			// btSave
+			// 
+			this.btSave.Location = new System.Drawing.Point(686, 231);
+			this.btSave.Name = "btSave";
+			this.btSave.Size = new System.Drawing.Size(75, 23);
+			this.btSave.TabIndex = 27;
+			this.btSave.Text = "Save";
+			this.btSave.UseVisualStyleBackColor = true;
+			this.btSave.Click += new System.EventHandler(this.btSave_Click);
+			// 
+			// btLoad
+			// 
+			this.btLoad.Location = new System.Drawing.Point(686, 193);
+			this.btLoad.Name = "btLoad";
+			this.btLoad.Size = new System.Drawing.Size(75, 23);
+			this.btLoad.TabIndex = 28;
+			this.btLoad.Text = "Load";
+			this.btLoad.UseVisualStyleBackColor = true;
+			this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
+			// 
+			// tbSettingName
+			// 
+			this.tbSettingName.Location = new System.Drawing.Point(524, 157);
+			this.tbSettingName.Name = "tbSettingName";
+			this.tbSettingName.Size = new System.Drawing.Size(156, 20);
+			this.tbSettingName.TabIndex = 29;
+			// 
+			// btDelete
+			// 
+			this.btDelete.Location = new System.Drawing.Point(686, 272);
+			this.btDelete.Name = "btDelete";
+			this.btDelete.Size = new System.Drawing.Size(75, 23);
+			this.btDelete.TabIndex = 30;
+			this.btDelete.Text = "Delete";
+			this.btDelete.UseVisualStyleBackColor = true;
+			this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(705, 590);
+			this.ClientSize = new System.Drawing.Size(900, 590);
+			this.Controls.Add(this.btDelete);
+			this.Controls.Add(this.tbSettingName);
+			this.Controls.Add(this.btLoad);
+			this.Controls.Add(this.btSave);
+			this.Controls.Add(this.lBSettings);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.BtSelect);
 			this.Controls.Add(this.label10);
@@ -371,6 +426,11 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Button BtSelect;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.ListBox lBSettings;
+		private System.Windows.Forms.Button btSave;
+		private System.Windows.Forms.Button btLoad;
+		private System.Windows.Forms.TextBox tbSettingName;
+		private System.Windows.Forms.Button btDelete;
 	}
 }
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Exchange.WebServices.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -22,7 +24,21 @@ namespace SentEmail
 		{
 			InitializeComponent();
 			Control.CheckForIllegalCrossThreadCalls = false;
+			LoadSettings();
 		}
+
+		const string settingFileSuffix = ".settings";
+
+		private void LoadSettings()
+		{
+			lBSettings.Items.Clear();
+			var settings = Directory.GetFiles(@".\", "*"+ settingFileSuffix, SearchOption.TopDirectoryOnly);
+			if (settings.Count() > 0)
+			{
+				lBSettings.Items.AddRange(settings);
+			}
+		}
+
 		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010);
 
 		//String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$";
@@ -189,6 +205,68 @@ namespace SentEmail
 			}
 
 			
+		}
+
+		private void btSave_Click(object sender, EventArgs e)
+		{
+			EwsInfo ewsinfo = new EwsInfo()
+			{
+				URL = tb_url.Text,
+				LoginEmail = tb_emailAddress.Text,
+				Password = tb_password.Text,
+				To = tb_to.Text,
+				Cc = tb_cc.Text,
+				Bcc = tb_bcc.Text,
+				Subject = tb_subject.Text,
+				Body = tb_body.Text,
+				Attachments = tb_attachments.Text,
+				LoopTimes = int.Parse(tb_loopTimes.Text),
+				AttachmentRate = float.Parse(tb_attachmentRate.Text)
+			};
+
+			if (tbSettingName.Text != String.Empty)
+			{
+				var json = JsonConvert.SerializeObject(ewsinfo);
+				var file = string.Format(@"{0}\{1}{2}",
+					Path.GetDirectoryName(Application.ExecutablePath), tbSettingName.Text, settingFileSuffix);
+				File.WriteAllText(file, json);
+				LoadSettings();
+			}
+		}
+
+		private void btLoad_Click(object sender, EventArgs e)
+		{
+			if(lBSettings.SelectedItem != null)
+			{
+				var ewsInfo = JsonConvert.DeserializeObject<EwsInfo>(
+					File.ReadAllText(lBSettings.SelectedItem.ToString()));
+
+				loadSettings(ewsInfo);
+			}
+		}
+
+		private void loadSettings(EwsInfo i_ewsInfo)
+		{
+			tb_url.Text = i_ewsInfo.URL;
+			tb_emailAddress.Text = i_ewsInfo.LoginEmail;
+			tb_password.Text = i_ewsInfo.Password;
+			tb_to.Text = i_ewsInfo.To;
+			tb_cc.Text = i_ewsInfo.Cc;
+			tb_bcc.Text = i_ewsInfo.Bcc;
+			tb_subject.Text = i_ewsInfo.Subject;
+			tb_body.Text = i_ewsInfo.Body;
+			tb_attachments.Text = i_ewsInfo.Attachments;
+			tb_loopTimes.Text = i_ewsInfo.LoopTimes.ToString();
+			tb_attachmentRate.Text = i_ewsInfo.AttachmentRate.ToString();
+		}
+
+		private void btDelete_Click(object sender, EventArgs e)
+		{
+			if(lBSettings.SelectedItem != null)
+			{
+				File.Delete(lBSettings.SelectedItem.ToString());
+				LoadSettings();
+			}
 		}
 	}
 }
