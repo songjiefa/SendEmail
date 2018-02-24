@@ -95,7 +95,7 @@
 			this.tb_emailAddress.Name = "tb_emailAddress";
 			this.tb_emailAddress.Size = new System.Drawing.Size(214, 20);
 			this.tb_emailAddress.TabIndex = 3;
-			this.tb_emailAddress.Text = "administrator@wm-e2013.wm.zhu.cn.qsft";
+			this.tb_emailAddress.Text = "administrator@uca-e2010.wm.zhu.cn.qsft";
 			// 
 			// label1
 			// 
@@ -148,7 +148,7 @@
 			this.tb_url.Name = "tb_url";
 			this.tb_url.Size = new System.Drawing.Size(340, 20);
 			this.tb_url.TabIndex = 9;
-			this.tb_url.Text = "https://wm-e2013-mc.wm-e2013.wm.zhu.cn.qsft/EWS/Exchange.asmx";
+			this.tb_url.Text = "https://uca-e2010-cas.uca-e2010.wm.zhu.cn.qsft/EWS/Exchange.asmx";
 			// 
 			// label5
 			// 

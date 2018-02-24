@@ -23,7 +23,7 @@ namespace SentEmail
 			InitializeComponent();
 			Control.CheckForIllegalCrossThreadCalls = false;
 		}
-		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013);
+		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010);
 
 		//String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$";
 		String EmailRegex = @"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?";
