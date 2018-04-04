@@ -61,6 +61,9 @@
 			this.btLoad = new System.Windows.Forms.Button();
 			this.tbSettingName = new System.Windows.Forms.TextBox();
 			this.btDelete = new System.Windows.Forms.Button();
+			this.cbIsSendIndividual = new System.Windows.Forms.CheckBox();
+			this.cbSendByTos = new System.Windows.Forms.CheckBox();
+			this.cbJustGenerateSendItems = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// tb_to
@@ -354,11 +357,51 @@
 			this.btDelete.UseVisualStyleBackColor = true;
 			this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
 			// 
+			// cbIsSendIndividual
+			// 
+			this.cbIsSendIndividual.AutoSize = true;
+			this.cbIsSendIndividual.Checked = true;
+			this.cbIsSendIndividual.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbIsSendIndividual.Location = new System.Drawing.Point(138, 170);
+			this.cbIsSendIndividual.Name = "cbIsSendIndividual";
+			this.cbIsSendIndividual.Size = new System.Drawing.Size(110, 17);
+			this.cbIsSendIndividual.TabIndex = 31;
+			this.cbIsSendIndividual.Text = "IsSendIndividual?";
+			this.cbIsSendIndividual.UseVisualStyleBackColor = true;
+			// 
+			// cbSendByTos
+			// 
+			this.cbSendByTos.AutoSize = true;
+			this.cbSendByTos.Checked = true;
+			this.cbSendByTos.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbSendByTos.ForeColor = System.Drawing.Color.Coral;
+			this.cbSendByTos.Location = new System.Drawing.Point(282, 170);
+			this.cbSendByTos.Name = "cbSendByTos";
+			this.cbSendByTos.Size = new System.Drawing.Size(81, 17);
+			this.cbSendByTos.TabIndex = 32;
+			this.cbSendByTos.Text = "SendByTos";
+			this.cbSendByTos.UseVisualStyleBackColor = true;
+			// 
+			// cbJustGenerateSendItems
+			// 
+			this.cbJustGenerateSendItems.AutoSize = true;
+			this.cbJustGenerateSendItems.Checked = true;
+			this.cbJustGenerateSendItems.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbJustGenerateSendItems.Location = new System.Drawing.Point(388, 170);
+			this.cbJustGenerateSendItems.Name = "cbJustGenerateSendItems";
+			this.cbJustGenerateSendItems.Size = new System.Drawing.Size(131, 17);
+			this.cbJustGenerateSendItems.TabIndex = 33;
+			this.cbJustGenerateSendItems.Text = "JustGenerateSentItem";
+			this.cbJustGenerateSendItems.UseVisualStyleBackColor = true;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(900, 590);
+			this.Controls.Add(this.cbJustGenerateSendItems);
+			this.Controls.Add(this.cbSendByTos);
+			this.Controls.Add(this.cbIsSendIndividual);
 			this.Controls.Add(this.btDelete);
 			this.Controls.Add(this.tbSettingName);
 			this.Controls.Add(this.btLoad);
@@ -431,6 +474,9 @@
 		private System.Windows.Forms.Button btLoad;
 		private System.Windows.Forms.TextBox tbSettingName;
 		private System.Windows.Forms.Button btDelete;
+		private System.Windows.Forms.CheckBox cbIsSendIndividual;
+		private System.Windows.Forms.CheckBox cbSendByTos;
+		private System.Windows.Forms.CheckBox cbJustGenerateSendItems;
 	}
 }
 
