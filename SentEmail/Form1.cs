@@ -110,7 +110,7 @@ namespace SentEmail
 				CreateFolder(tos);
 				SendByTos(tos, ccs, bccs, random, loopTime, true);
 
-				MoveInboxEmailToCustomFolder(tos, WellKnownFolderName.Inbox, "Custom Folder", 1);
+				MoveInboxEmailToCustomFolder(tos, WellKnownFolderName.Inbox, "Custom Folder", 500);
 
 				SendByTos(tos, ccs, bccs, random, loopTime, false);
 				return;
