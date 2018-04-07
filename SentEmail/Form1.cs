@@ -28,7 +28,7 @@ namespace SentEmail
 		}
 
 		const string settingFileSuffix = ".settings";
-		const string password = "I@mroot";
+		string password = "I@mroot";
 
 		private List<string> m_urls = new List<string>();
 
@@ -106,11 +106,11 @@ namespace SentEmail
 
 			if (cbSendByTos.Checked)
 			{
-				progressBar1.Maximum = loopTime * tos.Count() * tos.Count() * 2 + tos.Count() * 2;
+				progressBar1.Maximum = tos.Count() * tos.Count() * 2 + tos.Count() * 2;
 				CreateFolder(tos);
 				SendByTos(tos, ccs, bccs, random, loopTime, true);
 
-				MoveInboxEmailToCustomFolder(tos, WellKnownFolderName.Inbox, "Custom Folder", 1000);
+				MoveInboxEmailToCustomFolder(tos, WellKnownFolderName.Inbox, "Custom Folder", 1);
 
 				SendByTos(tos, ccs, bccs, random, loopTime, false);
 				return;
@@ -317,9 +317,11 @@ namespace SentEmail
 						{
 							message.Send();
 						}
-						progressBar1.Value++;
+						
 						//Thread.Sleep(TimeSpan.FromSeconds(5));
 					}
+
+					progressBar1.Value++;
 				}
 
 
@@ -343,7 +345,7 @@ namespace SentEmail
 				inboxfolder.Load();
 
 				// Finds the emails in a certain folder, in this case the Junk Email
-				FindItemsResults<Item> findResults = service.FindItems(inboxfolder.Id, new ItemView(500));
+				FindItemsResults<Item> findResults = service.FindItems(inboxfolder.Id, new ItemView(i_moveCount));
 
 				foreach (var folder in inboxfolder.FindFolders(new FolderView(100)))
 				{
@@ -401,6 +403,10 @@ namespace SentEmail
 
 		private void SetCredential(string to_sender)
 		{
+			if (service.Url.ToString() == "https://outlook.office365.com/EWS/Exchange.asmx")
+			{
+				password = "I@mrootPWD";
+			}
 			if (to_sender.Contains("Share"))
 			{
 				service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
