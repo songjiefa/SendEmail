@@ -20,9 +20,7 @@ namespace SentEmail
 {
 	public partial class Form1 : Form
 	{
-		bool isStep1Finished = false;
-		bool isStep2Finished = false;
-		bool isStep3Finished = false;
+		
 
 		public Form1()
 		{
@@ -30,7 +28,7 @@ namespace SentEmail
 			Control.CheckForIllegalCrossThreadCalls = false;
 			LoadSettings();
 		}
-
+		const int threadCount = 10;
 		const string settingFileSuffix = ".settings";
 		string password = "I@mroot";
 		static ReaderWriterLockSlim LogWriteLock = new ReaderWriterLockSlim();
@@ -243,7 +241,7 @@ namespace SentEmail
 		{
 			progressBar1.Maximum = loopTime * tos.Count();
 			var index = 0;
-			Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
+			Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			 {
 				 var service = Service;
 				 service.Url = new Uri(m_urls[index % m_urls.Count]);
@@ -316,7 +314,7 @@ namespace SentEmail
 		private ParallelLoopResult SendByTos(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime,bool sendAndSaveCopy)
 		{
 			var index = 0;
-			return Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
+			return Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			{
 				var service = Service;
 				service.Url = new Uri(m_urls[index % m_urls.Count]);
@@ -407,7 +405,7 @@ namespace SentEmail
 			String[] i_tos, string i_subFolder, int i_moveCount)
 		{
 			var index = 0;
-			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
+			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			{
 				var service = Service;
 				service.Url = new Uri(m_urls[index % m_urls.Count]);
@@ -467,7 +465,7 @@ namespace SentEmail
 		private ParallelLoopResult CreateFolder(string[] i_tos)
 		{
 			var i = 0;
-			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
+			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			{
 				var service = Service;
 				service.Url = new Uri(m_urls[i % m_urls.Count]);
