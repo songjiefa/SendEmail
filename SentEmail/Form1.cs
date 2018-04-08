@@ -116,6 +116,7 @@ namespace SentEmail
 			{
 				
 				GenerateSendItems(tos, ccs, bccs, random, loopTime);
+				MessageBox.Show("Done!");
 				return;
 			}
 
@@ -129,6 +130,7 @@ namespace SentEmail
 				result = MoveInboxEmailToCustomFolder(tos, "Custom Folder", 500);
 				while (!result.IsCompleted) ;
 				SendByTos(tos, ccs, bccs, random, loopTime, false);
+				MessageBox.Show("Done!");
 				return;
 			}
 
@@ -136,6 +138,7 @@ namespace SentEmail
 			if (cbIsSendIndividual.Checked)
 			{
 				SendIndividual(tos, ccs, bccs, random, loopTime);
+				MessageBox.Show("Done!");
 				return;
 			}
 			
