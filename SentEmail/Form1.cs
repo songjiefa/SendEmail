@@ -33,7 +33,7 @@ namespace SentEmail
 
 		const string settingFileSuffix = ".settings";
 		string password = "I@mroot";
-
+		static ReaderWriterLockSlim LogWriteLock = new ReaderWriterLockSlim();
 		private List<string> m_urls = new List<string>();
 
 		private void LoadSettings()
@@ -279,9 +279,9 @@ namespace SentEmail
 					 }
 					 catch (Exception ex)
 					 {
-						 File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
+						 WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
 						 retryTimes++;
-						 if(retryTimes < 3)
+						 if (retryTimes < 3)
 						 {
 							 Thread.Sleep(TimeSpan.FromMinutes(3));
 							 i--;
@@ -301,6 +301,18 @@ namespace SentEmail
 				}
 			 }));
 		}
+
+		private static void WriteLog(string i_path, string i_content)
+		{
+			try
+			{
+				LogWriteLock.EnterWriteLock();
+				File.AppendAllText(i_path, i_content);
+				LogWriteLock.ExitWriteLock();
+			}
+			catch { }
+		}
+
 		private ParallelLoopResult SendByTos(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime,bool sendAndSaveCopy)
 		{
 			var index = 0;
@@ -365,7 +377,10 @@ namespace SentEmail
 						}
 						catch(Exception ex)
 						{
-							File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error:{3}\r\n:", to_sender, to, i, ex.Message));
+
+
+							WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error:{3}\r\n:", to_sender, to, i, ex.Message));
+
 							retryTimes++;
 							if(retryTimes < 3)
 							{
@@ -428,7 +443,7 @@ namespace SentEmail
 							}
 							catch (Exception ex)
 							{
-								File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
+								WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
 								retryTimes++;
 								if(retryTimes < 3)
 								{
