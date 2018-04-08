@@ -279,10 +279,11 @@ namespace SentEmail
 					 }
 					 catch (Exception ex)
 					 {
-						 File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}", to_sender, loopTime, ex.Message));
+						 File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
 						 retryTimes++;
 						 if(retryTimes < 3)
 						 {
+							 Thread.Sleep(TimeSpan.FromMinutes(3));
 							 i--;
 						 }
 						 else
@@ -292,7 +293,7 @@ namespace SentEmail
 							 continue;
 						 }
 
-						 File.AppendAllText(@".\error.txt", ex.Message + "\r\n");
+						 //File.AppendAllText(@".\error.txt", ex.Message + "\r\n");
 					 }
 
 					 progressBar1.Value++;
@@ -364,10 +365,11 @@ namespace SentEmail
 						}
 						catch(Exception ex)
 						{
-							File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error{3}:", to_sender, to, loopTime, ex.Message));
+							File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error:{3}\r\n:", to_sender, to, i, ex.Message));
 							retryTimes++;
 							if(retryTimes < 3)
 							{
+								Thread.Sleep(TimeSpan.FromMinutes(3));
 								i--;
 							}
 							else
@@ -426,10 +428,11 @@ namespace SentEmail
 							}
 							catch (Exception ex)
 							{
-								File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error{2}:", to_sender, i, ex.Message));
+								File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
 								retryTimes++;
 								if(retryTimes < 3)
 								{
+									Thread.Sleep(TimeSpan.FromMinutes(3));
 									i--;
 								}
 								else
