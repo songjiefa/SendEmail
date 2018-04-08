@@ -277,7 +277,7 @@ namespace SentEmail
 					 }
 					 catch (Exception ex)
 					 {
-						 WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
+						 WriteLog(@".\error.txt", string.Format("{0}GenerateSendItems=>SenderEmail:{1}--Loop:{2}--Error:{3}\r\n", DateTime.Now, to_sender, i, ex.Message));
 						 retryTimes++;
 						 if (retryTimes < 3)
 						 {
@@ -377,7 +377,7 @@ namespace SentEmail
 						{
 
 
-							WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error:{3}\r\n:", to_sender, to, i, ex.Message));
+							WriteLog(@".\error.txt", string.Format("{0}SendByTos=>SenderEmail:{1}--Recipient:{2}--Loop:{3}--Error:{4}\r\n:", DateTime.Now, to_sender, to, i, ex.Message));
 
 							retryTimes++;
 							if(retryTimes < 3)
@@ -441,7 +441,7 @@ namespace SentEmail
 							}
 							catch (Exception ex)
 							{
-								WriteLog(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}\r\n", to_sender, i, ex.Message));
+								WriteLog(@".\error.txt", string.Format("{0}MoveInboxEmailToCustomFolder=>SenderEmail:{1}--Loop:{2}--Error:{3}\r\n", DateTime.Now, to_sender, i, ex.Message));
 								retryTimes++;
 								if(retryTimes < 3)
 								{
@@ -467,29 +467,38 @@ namespace SentEmail
 			var i = 0;
 			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			{
-				var service = Service;
-				service.Url = new Uri(m_urls[i % m_urls.Count]);
-				i++;
-				SetCredential(service,to_sender);
-				// Create a custom folder class.
-				Folder folder = new Folder(service);
-				folder.DisplayName = "Custom Folder";
-				folder.FolderClass = "IPF.MyCustomFolderClass";
-
-				FolderId folderToAccess = new FolderId(WellKnownFolderName.Inbox, to_sender);
-
-				Folder inboxfolder = to_sender.Contains("Share") ?
-					Folder.Bind(service, folderToAccess) :
-					Folder.Bind(service, WellKnownFolderName.Inbox);
-
-				var inboxSubFolders = inboxfolder.FindFolders(new FolderView(1000));
-
-
-				//var desFolderCount = inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName);
-				if (inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName) <= 0)
+				try
 				{
-					// Create the folder as a child of the Inbox folder.
-					folder.Save(inboxfolder.Id);
+					var service = Service;
+					service.Url = new Uri(m_urls[i % m_urls.Count]);
+					i++;
+					SetCredential(service, to_sender);
+					// Create a custom folder class.
+
+					Folder folder = new Folder(service);
+					folder.DisplayName = "Custom Folder";
+					folder.FolderClass = "IPF.MyCustomFolderClass";
+
+					FolderId folderToAccess = new FolderId(WellKnownFolderName.Inbox, to_sender);
+
+					Folder inboxfolder = to_sender.Contains("Share") ?
+						Folder.Bind(service, folderToAccess) :
+						Folder.Bind(service, WellKnownFolderName.Inbox);
+
+					var inboxSubFolders = inboxfolder.FindFolders(new FolderView(1000));
+
+
+					//var desFolderCount = inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName);
+					if (inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName) <= 0)
+					{
+						// Create the folder as a child of the Inbox folder.
+						folder.Save(inboxfolder.Id);
+					}
+				}
+				catch (Exception ex)
+				{
+					WriteLog(@".\error.txt", string.Format("{0}CreateFolder=>SenderEmail:{1}--Error:{2}\r\n", DateTime.Now, to_sender, ex.Message));
+
 				}
 
 				progressBar1.Value++;
