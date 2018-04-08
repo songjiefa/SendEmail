@@ -20,6 +20,10 @@ namespace SentEmail
 {
 	public partial class Form1 : Form
 	{
+		bool isStep1Finished = false;
+		bool isStep2Finished = false;
+		bool isStep3Finished = false;
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -42,10 +46,23 @@ namespace SentEmail
 			}
 		}
 
-		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010);
+		//ExchangeService Service = new ExchangeService(ExchangeVersion.Exchange2010);
+
+
 
 		//String EmailRegex = @"^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$";
 		String EmailRegex = @"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?";
+
+		public ExchangeService Service
+		{
+			get
+			{
+				return new ExchangeService(ExchangeVersion.Exchange2010);
+			}
+
+			
+		}
+
 		private void bt_send_Click(object sender, EventArgs e)
 		{
 			//await SendEmail();
@@ -107,11 +124,12 @@ namespace SentEmail
 			if (cbSendByTos.Checked)
 			{
 				progressBar1.Maximum = tos.Count() * tos.Count() * 2 + tos.Count() * 2;
-				CreateFolder(tos);
-				SendByTos(tos, ccs, bccs, random, loopTime, true);
-
-				MoveInboxEmailToCustomFolder(tos, WellKnownFolderName.Inbox, "Custom Folder", 500);
-
+				 var result =  CreateFolder(tos);
+				while (!result.IsCompleted) ;
+				result = SendByTos(tos, ccs, bccs, random, loopTime, true);
+				while (!result.IsCompleted) ;
+				result = MoveInboxEmailToCustomFolder(tos, "Custom Folder", 500);
+				while (!result.IsCompleted) ;
 				SendByTos(tos, ccs, bccs, random, loopTime, false);
 				return;
 			}
@@ -132,9 +150,9 @@ namespace SentEmail
 			progressBar1.Maximum = loopTime;
 			for (int i = 0; i < loopTime; i++)
 			{
-				service.Url = new Uri(m_urls[i % m_urls.Count]);
+				Service.Url = new Uri(m_urls[i % m_urls.Count]);
 
-				EmailMessage message = new EmailMessage(service);
+				EmailMessage message = new EmailMessage(Service);
 
 
 				if (tos[0] != string.Empty) message.ToRecipients.AddRange(tos);
@@ -169,8 +187,8 @@ namespace SentEmail
 
 				for (int i = 0; i < loopTime; i++)
 				{
-					service.Url = new Uri(m_urls[i % m_urls.Count]);
-					EmailMessage message = new EmailMessage(service);
+					Service.Url = new Uri(m_urls[i % m_urls.Count]);
+					EmailMessage message = new EmailMessage(Service);
 
 					message.ToRecipients.Add(to);
 					if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
@@ -225,118 +243,159 @@ namespace SentEmail
 		{
 			progressBar1.Maximum = loopTime * tos.Count();
 			var index = 0;
-			foreach (var to_sender in tos)
-			{
-				service.Url = new Uri(m_urls[index % m_urls.Count]);
-				index++;
-				SetCredential(to_sender);
+			Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
+			 {
+				 var service = Service;
+				 service.Url = new Uri(m_urls[index % m_urls.Count]);
+				 index++;
+				 SetCredential(service, to_sender);
 
-				for (int i = 0; i < loopTime; i++)
-				{
-					EmailMessage message = new EmailMessage(service);
-					message.Sender = to_sender;
-					message.ToRecipients.Add(tb_emailAddress.Text);
-					if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
-					if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
-					message.Subject = tb_subject.Text + to_sender + i.ToString("00000");
+				 var retryTimes = 0;
+				 for (int i = 0; i < loopTime; i++)
+				 {
+					 try
+					 {
+						 EmailMessage message = new EmailMessage(service);
+						 message.Sender = to_sender;
+						 message.ToRecipients.Add("714737954@qq.com");
+						 if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
+						 if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
+						 message.Subject = tb_subject.Text + to_sender + i.ToString("00000");
 
-					message.Body = tb_body.Text + to_sender + i.ToString("00000");
-					//message.Attachments.AddFileAttachment("");
-					var randomNum = random.Next(1, 100);
-					if (randomNum < float.Parse(tb_attachmentRate.Text) * 100 &&
-						tb_attachments.Tag != null)
-					{
-						message.Attachments.Clear();
-						foreach (var fileNmae in (string[])tb_attachments.Tag)
-						{
-							message.Attachments.AddFileAttachment(fileNmae);
-						}
-					}
+						 message.Body = tb_body.Text + to_sender + i.ToString("00000");
+						 //message.Attachments.AddFileAttachment("");
+						 var randomNum = random.Next(1, 100);
+						 if (randomNum < float.Parse(tb_attachmentRate.Text) * 100 &&
+							 tb_attachments.Tag != null)
+						 {
+							 message.Attachments.Clear();
+							 foreach (var fileNmae in (string[])tb_attachments.Tag)
+							 {
+								 message.Attachments.AddFileAttachment(fileNmae);
+							 }
+						 }
 
-					message.SendAndSaveCopy();
+						 message.SendAndSaveCopy();
+					 }
+					 catch (Exception ex)
+					 {
+						 File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error:{2}", to_sender, loopTime, ex.Message));
+						 retryTimes++;
+						 if(retryTimes < 3)
+						 {
+							 i--;
+						 }
+						 else
+						 {
+							 retryTimes = 0;
 
-					progressBar1.Value++;
+							 continue;
+						 }
+
+						 File.AppendAllText(@".\error.txt", ex.Message + "\r\n");
+					 }
+
+					 progressBar1.Value++;
 					//Thread.Sleep(TimeSpan.FromSeconds(5));
 				}
-			}
+			 }));
 		}
-		private void SendByTos(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime,bool sendAndSaveCopy)
+		private ParallelLoopResult SendByTos(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime,bool sendAndSaveCopy)
 		{
 			var index = 0;
-			foreach (var to_sender in tos)
+			return Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
 			{
+				var service = Service;
 				service.Url = new Uri(m_urls[index % m_urls.Count]);
 				index++;
-				SetCredential(to_sender);
+				SetCredential(service, to_sender);
 
 				foreach (var to in tos)
 				{
+					var retryTimes = 0;
 					for (int i = 0; i < loopTime; i++)
 					{
-						EmailMessage message = new EmailMessage(service);
-						
-						if (to_sender.Contains("Share"))
+						try
 						{
-							message.From = new EmailAddress(to_sender);
-						}
-						else
-						{
-							message.Sender = to_sender;
-						}
-						message.ToRecipients.Add(to);
-						if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
-						if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
-						message.Subject = tb_subject.Text + to_sender + i.ToString("00000");
+							EmailMessage message = new EmailMessage(service);
 
-						message.Body = tb_body.Text + to_sender + i.ToString("00000");
-						//message.Attachments.AddFileAttachment("");
-						var randomNum = random.Next(1, 100);
-						if (randomNum < float.Parse(tb_attachmentRate.Text) * 100 &&
-							tb_attachments.Tag != null)
-						{
-							message.Attachments.Clear();
-							foreach (var fileNmae in (string[])tb_attachments.Tag)
-							{
-								message.Attachments.AddFileAttachment(fileNmae);
-							}
-						}
-						if (sendAndSaveCopy)
-						{
 							if (to_sender.Contains("Share"))
 							{
-								Mailbox sharedMailbox = new Mailbox(to_sender);
-								FolderId shareSenItems = new FolderId(WellKnownFolderName.SentItems, sharedMailbox);
-								message.SendAndSaveCopy(shareSenItems);
+								message.From = new EmailAddress(to_sender);
 							}
 							else
 							{
-								message.SendAndSaveCopy();
+								message.Sender = to_sender;
+							}
+							message.ToRecipients.Add(to);
+							if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
+							if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
+							message.Subject = tb_subject.Text + to_sender + i.ToString("00000");
+
+							message.Body = tb_body.Text + to_sender + i.ToString("00000");
+							//message.Attachments.AddFileAttachment("");
+							var randomNum = random.Next(1, 100);
+							if (randomNum < float.Parse(tb_attachmentRate.Text) * 100 &&
+								tb_attachments.Tag != null)
+							{
+								message.Attachments.Clear();
+								foreach (var fileNmae in (string[])tb_attachments.Tag)
+								{
+									message.Attachments.AddFileAttachment(fileNmae);
+								}
+							}
+							if (sendAndSaveCopy)
+							{
+								if (to_sender.Contains("Share"))
+								{
+									Mailbox sharedMailbox = new Mailbox(to_sender);
+									FolderId shareSenItems = new FolderId(WellKnownFolderName.SentItems, sharedMailbox);
+									message.SendAndSaveCopy(shareSenItems);
+								}
+								else
+								{
+									message.SendAndSaveCopy();
+								}
+							}
+							else
+							{
+								message.Send();
 							}
 						}
-						else
+						catch(Exception ex)
 						{
-							message.Send();
+							File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Recipient:{1}--Loop:{2}--Error{3}:", to_sender, to, loopTime, ex.Message));
+							retryTimes++;
+							if(retryTimes < 3)
+							{
+								i--;
+							}
+							else
+							{
+								retryTimes = 0;
+								
+								continue;
+							}
 						}
-						
+
 						//Thread.Sleep(TimeSpan.FromSeconds(5));
 					}
 
 					progressBar1.Value++;
 				}
-
-
-			}
+			}));
 		}
 
-		private void MoveInboxEmailToCustomFolder(
-			String[] i_tos, WellKnownFolderName i_folderName, string i_subFolder, int i_moveCount)
+		private ParallelLoopResult MoveInboxEmailToCustomFolder(
+			String[] i_tos, string i_subFolder, int i_moveCount)
 		{
 			var index = 0;
-			foreach (var to_sender in i_tos)
+			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
 			{
+				var service = Service;
 				service.Url = new Uri(m_urls[index % m_urls.Count]);
 				index++;
-				SetCredential(to_sender);
+				SetCredential(service,to_sender);
 				FolderId folderToAccess = new FolderId(WellKnownFolderName.Inbox, to_sender);
 
 				Folder inboxfolder = to_sender.Contains("Share") ?
@@ -355,27 +414,47 @@ namespace SentEmail
 						// Trust me, the ID is a pain if you want to manually copy and paste it. This stores it in a variable
 						var fid = folder.Id;
 						var items = findResults.Items;
+						var retryTimes = 0;
 						for (var i = 0; i < Math.Min(i_moveCount, items.Count); i++)
 						{
 							// Load the email, move the email into the id.  Note that MOVE needs a valid ID, which is why storing the ID in a variable works easily.
-							items[i].Load();
-							items[i].Move(fid);
+							
+							try
+							{
+								items[i].Load();
+								items[i].Move(fid);
+							}
+							catch (Exception ex)
+							{
+								File.AppendAllText(@".\error.txt", string.Format("SenderEmail:{0}--Loop:{1}--Error{2}:", to_sender, i, ex.Message));
+								retryTimes++;
+								if(retryTimes < 3)
+								{
+									i--;
+								}
+								else
+								{
+									retryTimes = 0;
+									continue;
+								}
+							}
 
 						}
 					}
 				}
 				progressBar1.Value++;
-			}
+			}));
 		}
 
-		private void CreateFolder(string[] i_tos)
+		private ParallelLoopResult CreateFolder(string[] i_tos)
 		{
 			var i = 0;
-			foreach (var to_sender in i_tos)
+			return Parallel.ForEach(i_tos, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (Action<string>)(to_sender =>
 			{
+				var service = Service;
 				service.Url = new Uri(m_urls[i % m_urls.Count]);
 				i++;
-				SetCredential(to_sender);
+				SetCredential(service,to_sender);
 				// Create a custom folder class.
 				Folder folder = new Folder(service);
 				folder.DisplayName = "Custom Folder";
@@ -383,13 +462,13 @@ namespace SentEmail
 
 				FolderId folderToAccess = new FolderId(WellKnownFolderName.Inbox, to_sender);
 
-				Folder inboxfolder = to_sender.Contains("Share")? 
-					Folder.Bind(service, folderToAccess): 
+				Folder inboxfolder = to_sender.Contains("Share") ?
+					Folder.Bind(service, folderToAccess) :
 					Folder.Bind(service, WellKnownFolderName.Inbox);
-				
+
 				var inboxSubFolders = inboxfolder.FindFolders(new FolderView(1000));
-				
-				
+
+
 				//var desFolderCount = inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName);
 				if (inboxSubFolders.Count(f => f.DisplayName == folder.DisplayName) <= 0)
 				{
@@ -398,22 +477,22 @@ namespace SentEmail
 				}
 
 				progressBar1.Value++;
-			}
+			}));
 		}
 
-		private void SetCredential(string to_sender)
+		private void SetCredential(ExchangeService i_service, string to_sender)
 		{
-			if (service.Url.ToString() == "https://outlook.office365.com/EWS/Exchange.asmx")
+			if (i_service.Url.ToString() == "https://outlook.office365.com/EWS/Exchange.asmx")
 			{
 				password = "I@mrootPWD";
 			}
 			if (to_sender.Contains("Share"))
 			{
-				service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
+				i_service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
 			}
 			else
 			{
-				service.Credentials = new WebCredentials(to_sender, password);
+				i_service.Credentials = new WebCredentials(to_sender, password);
 			}
 		}
 
@@ -427,7 +506,7 @@ namespace SentEmail
 					"{0} has wrong email address format.", tb_emailAddress.Text));
 			}
 
-			service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
+			Service.Credentials = new WebCredentials(tb_emailAddress.Text, tb_password.Text);
 
 			m_urls.AddRange(tb_url.Text.Split(';'));
 		}
