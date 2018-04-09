@@ -115,21 +115,43 @@ namespace SentEmail
 			if (cbJustGenerateSendItems.Checked)
 			{
 				
-				GenerateSendItems(tos, ccs, bccs, random, loopTime);
-				MessageBox.Show("Done!");
+				var result = GenerateSendItems(tos, ccs, bccs, random, loopTime);
+				while (!result.IsCompleted)
+				{
+					Thread.Sleep(1000 * 20);
+				};
+
+				this.Text = "Done";
 				return;
 			}
 
 			if (cbSendByTos.Checked)
 			{
 				progressBar1.Maximum = tos.Count() * tos.Count() * 2 + tos.Count() * 2;
-				 var result =  CreateFolder(tos);
-				while (!result.IsCompleted) ;
+				var result =  CreateFolder(tos);
+				while (!result.IsCompleted)
+				{
+					Thread.Sleep(1000 * 20);
+				};
+
 				result = SendByTos(tos, ccs, bccs, random, loopTime, true);
-				while (!result.IsCompleted) ;
+				while (!result.IsCompleted)
+				{
+					Thread.Sleep(1000 * 20);
+				};
+
 				result = MoveInboxEmailToCustomFolder(tos, "Custom Folder", 500);
-				while (!result.IsCompleted) ;
-				SendByTos(tos, ccs, bccs, random, loopTime, false);
+				while (!result.IsCompleted)
+				{
+					Thread.Sleep(1000 * 20);
+				};
+
+				result = SendByTos(tos, ccs, bccs, random, loopTime, false);
+				while (!result.IsCompleted)
+				{
+					Thread.Sleep(1000 * 20);
+				};
+
 				MessageBox.Show("Done!");
 				return;
 			}
@@ -240,17 +262,17 @@ namespace SentEmail
 			return i_partipient;
 		}
 
-		private void GenerateSendItems(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime)
+		private ParallelLoopResult GenerateSendItems(string[] tos, string[] ccs, string[] bccs, Random random, int loopTime)
 		{
 			progressBar1.Maximum = loopTime * tos.Count();
 			var index = 0;
-			Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
+			return Parallel.ForEach(tos, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (Action<string>)(to_sender =>
 			 {
 				 var service = Service;
 				 service.Url = new Uri(m_urls[index % m_urls.Count]);
 				 index++;
 				 SetCredential(service, to_sender);
-
+				 Random random2 = new Random();
 				 var retryTimes = 0;
 				 for (int i = 0; i < loopTime; i++)
 				 {
@@ -258,7 +280,8 @@ namespace SentEmail
 					 {
 						 EmailMessage message = new EmailMessage(service);
 						 message.Sender = to_sender;
-						 message.ToRecipients.Add("714737954@qq.com");
+						 var recipient = "MS1User" + random2.Next(5000).ToString("00000") + "@365sale1.onmicrosoft.com";
+						 message.ToRecipients.Add(recipient);
 						 if (ccs[0] != string.Empty) message.CcRecipients.AddRange(ccs);
 						 if (bccs[0] != string.Empty) message.ToRecipients.AddRange(bccs);
 						 message.Subject = tb_subject.Text + to_sender + i.ToString("00000");
@@ -277,6 +300,7 @@ namespace SentEmail
 						 }
 
 						 message.SendAndSaveCopy();
+						 WriteLog(@".\nomal.txt", string.Format("{0}Sucessuce=>SenderEmail:{1}--Recipient:{2}--Loop:{3}\r\n", DateTime.Now, to_sender, recipient, i));
 					 }
 					 catch (Exception ex)
 					 {
@@ -284,7 +308,7 @@ namespace SentEmail
 						 retryTimes++;
 						 if (retryTimes < 3)
 						 {
-							 Thread.Sleep(TimeSpan.FromMinutes(3));
+							 Thread.Sleep(TimeSpan.FromSeconds(10));
 							 i--;
 						 }
 						 else
